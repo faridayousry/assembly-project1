@@ -161,48 +161,53 @@ void instDecExec(unsigned int instWord)
 	}
 	else if (opcode == 0x73) {          // ecall and ebreak (1110011) 115
 		switch (I_imm) {
-		case 0: cout << "\tECALL\t" << "\n";
-			break;
-		case 1: cout << "\tEBREAK\t" << "\n";
-			break;
-		default: cout << "\tUnkown R Instruction \n";
-		}
-		}
-		else if (opcode == 0x67) {        // Jalr (1100111) 103
-		cout << "\tJALR\tx" << rd << ", x" << rs1 << ", " << I_imm << "\n";
+			case 0: cout << "\tECALL\t" << "\n";
+				break;
 
-		}
-		else if (opcode == 0x13) {        // I-Instructions (0010011) 19
+			case 1: cout << "\tEBREAK\t" << "\n";
+				break;
 
+			default: cout << "\tUnkown R Instruction \n";
+			}
 		}
+		else if (opcode == 0x67)         // Jalr (1100111) 103
+			cout << "\tJALR\tx" << rd << ", x" << rs1 << ", " << I_imm << "\n";
+				//regs[rd] = PC + 4; PC += imm;
 
 		else if (opcode == 0x23) {          // S-Instructions (0100011) 35
-		switch (funct3) {
-		case 0: cout << "\tSB\tx" << rs2 << ", " << S_imm << "(" << rs2 << ")" << "\n";
-			break;
-		case 1: cout << "\tSH\tx" << rs2 << ", " << S_imm << "(" << rs2 << ")" << "\n";
-			break;
-		case 2: cout << "\tSW\tx" << rs2 << ", " << S_imm << "(" << rs2 << ")" << "\n";
-			break;
-		}
+			switch (funct3) {
+				case 0: cout << "\tSB\tx" << rs2 << ", " << S_imm << "(" << rs2 << ")" << "\n";
+						//M[rs1 + imm][0:7] = rs2[0:7];
+					break;
+
+				case 1: cout << "\tSH\tx" << rs2 << ", " << S_imm << "(" << rs2 << ")" << "\n";
+						//M[rs1 + imm][0:15] = rs2[0:15];
+					break;
+
+				case 2: cout << "\tSW\tx" << rs2 << ", " << S_imm << "(" << rs2 << ")" << "\n";
+						//M[rs1 + imm][0:31] = rs2[0:31];
+					break;
+				}
 			}
 		else if (opcode == 0x63) {          // B-Instructions (1100011) 99
-		switch (funct3) {}
+			switch (funct3) {}
 		}
+
 		else if (opcode == 0x6F) {          // J-Instructions (1101111) 111
-		switch (funct3) {}
+			switch (funct3) {}
 		}
 
-		else if (opcode == 0x37) {          // U-Instruction: LUI (0110111) 55
-		cout << "\tLUI\tx" << rd << ", " << U_imm << "\n";
-		}
-		else if (opcode == 0x37) {        // U-Instruction: AUIPC (0010111) 55
-		cout << "\tAUPIC\tx" << rd << ", " << U_imm << "\n";
-		}
-		else {
+		else if (opcode == 0x37)           // U-Instruction: LUI (0110111) 55
+			cout << "\tLUI\tx" << rd << ", " << U_imm << "\n";
+					//regs[rd] = imm << 12;
+		
+		else if (opcode == 0x17) {       // U-Instruction: AUIPC (0010111) 23
+			cout << "\tAUPIC\tx" << rd << ", " << U_imm << "\n";
+					//regs[rd] = PC + (imm << 12);
+
+		}else 
 			cout << "\tUnkown Instruction \n";
-		}
-
+		
 }
 
 int main(int argc, char *argv[]){
@@ -222,18 +227,20 @@ int main(int argc, char *argv[]){
 
 		inFile.seekg (0, inFile.beg);
 		if(!inFile.read((char *)buffer, fsize)) emitError("Cannot read from input file\n");
-
-		while(true){
-				instWord = 	(unsigned char)buffer[pc] |
-						(((unsigned char)buffer[pc+1])<<8) |
-						(((unsigned char)buffer[pc+2])<<16) |
-						(((unsigned char)buffer[pc+3])<<24);
-				pc += 4;
-				// remove the following line once you have a complete disassembler
-				if(pc==32) break;			// stop when PC reached address 32
-				instDecExec(instWord);
+		
+		while (true) {
+			instWord = (unsigned char)buffer[pc] |
+				(((unsigned char)buffer[pc + 1]) << 8) |
+				(((unsigned char)buffer[pc + 2]) << 16) |
+				(((unsigned char)buffer[pc + 3]) << 24);
+			pc += 4;
+			// remove the following line once you have a complete disassembler
+			if (pc == 32) break;			// stop when PC reached address 32
+			instDecExec(instWord);
 		}
-
+		
 
 	} else emitError("Cannot access input file\n");
+	//inFile.close();	??????/
+	return 0;
 }
