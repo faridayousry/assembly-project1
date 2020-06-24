@@ -45,17 +45,21 @@ void instDecExec(unsigned int instWord)
 					cout << "\tADD\tx" << rd << ", x" << rs1 << ", x" << rs2 << "\n";
 								//regs[rd] = regs[rs1] + regs[rs2];
 				}
+				  break;
 			case 1: cout << "\tSLL\tx" << rd << ", x" << rs1 << ", x" << rs2 << "\n";		//SHOULD CASES BE IN HEXA????!!!!!!!!!!!
 								//regs[rd] = regs[rs1] << regs[rs2];
-
+				break;
 			case 2: cout << "\tSLT\tx" << rd << ", x" << rs1 << ", x" << rs2 << "\n";
 								//regs[rd] = (regs[rs1] < regs[rs2])?1:0
+				break;
 
 			case 3: cout << "\tSLTU\tx" << rd << ", x" << rs1 << ", x" << rs2 << "\n";
 								//regs[rd] = (regs[rs1] < regs[rs2])?1:0
+				break;
 
 			case 4: cout << "\tXOR\tx" << rd << ", x" << rs1 << ", x" << rs2 << "\n";
 								//regs[rd] = regs[rs1] ^ regs[rs2];
+				break;
 
 			case 5: if (funct7 == 32) {
 					cout << "\tSRA\tx" << rd << ", x" << rs1 << ", x" << rs2 << "\n";
@@ -65,17 +69,26 @@ void instDecExec(unsigned int instWord)
 					cout << "\tSRL\tx" << rd << ", x" << rs1 << ", x" << rs2 << "\n";
 								//regs[rd] = regs[rs1] << regs[rs2];
 			}
+				  break;
 
 			case 6: cout << "\tOR\tx" << rd << ", x" << rs1 << ", x" << rs2 << "\n";
 								//regs[rd] = regs[rs1] | regs[rs2];
+				break;
 
 			case 7: cout << "\tAND\tx" << rd << ", x" << rs1 << ", x" << rs2 << "\n";
 								//regs[rd] = regs[rs1] & regs[rs2];
+				break;
 
-			break;																		//!!!!!!!!!!!!???????????here of after else in case 0?
 			default: cout << "\tUnkown R Instruction \n";
 		}
-	} else {
+	} 
+	else if (opcode == 0x13) {		// I-Instructions (0010011) 19
+
+	}
+	
+	
+	
+	else {
 		cout << "\tUnkown Instruction \n";
 	}
 
