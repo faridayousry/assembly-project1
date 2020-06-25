@@ -25,7 +25,7 @@ void emitError(char *s)
 
 void instDecExec(unsigned int instWord)
 {
-    unsigned int rd, rs1, rs2, funct3, funct7, opcode;
+    unsigned int rd, rs1, rs2, funct3, funct7, opcode, csr;
     unsigned int I_imm, S_imm, B_imm, U_imm, J_imm;
     unsigned int address;
     
@@ -35,6 +35,7 @@ void instDecExec(unsigned int instWord)
     rs1 = (instWord >> 15) & 0x0000001F;    //delete rightmost 15 bits and get 5 bits for rs1
     rs2 = (instWord >> 20) & 0x0000001F;    //delete rightmost 20 bits and get 5 bits for rs2
     funct7 = (instWord >> 25) & 0x0000007F;
+    csr = (instWord >> 20) & 0x0000000C;    //to get 12 leftmost bits for csr register (counter type instructions)
     
     I_imm = (instWord >> 20) & 0x00000FFF;
     S_imm = (((instWord >> 7) & 0x0000001F) + ((instWord >> 25) & 0x0000007F)) << 7;
@@ -241,10 +242,29 @@ void instDecExec(unsigned int instWord)
                 
             case 1: cout << "\tEBREAK\t" << "\n";
                 break;
+
+            default: cout << "\tUnkown I Instruction \n";
+        }
+        switch(funct3) {             //csrrw,csrrs...     
+            case 1: cout << "\tCSRRW\t" << rd << ", "<< csr << ", "<< rs1<< "\n";
+                break;
+                //csrrw t0, csr,t1    
+
+            case 2: cout << "\tCSRRS\t" << rd << ", "<< csr << ", "<< rs1<< "\n";
+                break;
+                //csrrs t0, csr, t1
                 
-            default: cout << "\tUnkown R Instruction \n";
+            case 3: cout << "\tCSRRC\t" << rd << ", "<< csr << ", "<< rs1<< "\n";
+                break;
+                //csrrc t0 fcsr, t1
+
+/*csrrwi t0 fcsr, 10
+csrrsi t0 fcsr, 10
+csrrci t0 fcsr, 10 */
+            default: cout << "\tUnkown I Instruction \n";
         }
     }
+
     else if (opcode == 0x67){           // Jalr (1100111) 103
         cout << "\tJALR\tx" << rd << ", x" << rs1 << ", " << I_imm << "\n";
     //regs[rd] = PC + 4; PC += imm;
@@ -367,6 +387,22 @@ void instDecExec(unsigned int instWord)
         
     }else
         cout << "\tUnkown Instruction \n";
+
+    else if (opcode == 0x0F) {          // I-Instructions (00001111) 15
+        switch (funct3) {
+            case 0: cout << "\tFENCE\tx" << "\n";
+						//fence succ,pred
+					break;
+
+			case 1: cout << "\tFENCE.I\tx" << "\n";
+						//fence.i
+					break;
+        
+        	default: cout << "\tUnkown I Instruction \n"; 
+
+            }
+
+  
     
 }
 
