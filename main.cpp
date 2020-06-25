@@ -59,7 +59,7 @@ void instDecExec(unsigned int instWord)
                 //regs[rd] = regs[rs1] + regs[rs2];
             }
                 break;
-            case 1: cout << "\tSLL\tx" << rd << ", x" << rs1 << ", x" << rs2 << "\n";      
+            case 1: cout << "\tSLL\tx" << rd << ", x" << rs1 << ", x" << rs2 << "\n";        //SHOULD CASES BE IN HEXA????!!!!!!!!!!!
                 //regs[rd] = regs[rs1] << regs[rs2];
                 break;
             case 2: cout << "\tSLT\tx" << rd << ", x" << rs1 << ", x" << rs2 << "\n";
@@ -135,6 +135,7 @@ void instDecExec(unsigned int instWord)
                 }
             }
         else{
+            I_imm = (I_imm xor 0xFFFFFFFF) + 1;
             switch (funct3) {
                 case 0: cout << "\tANDI\tx" << rd << ", x" << rs1 << ", -" << I_imm << "\n";
                     //regs[rd] = regs[rs1] - imm;
@@ -206,8 +207,8 @@ void instDecExec(unsigned int instWord)
                 default: cout << "\tUnkown I Instruction \n";
             }
         }
-        if(posNegBit_I == 1){
-            I_imm = (I_imm & 0) + 1;
+         else {
+            I_imm = (I_imm xor 0xFFFFFFFF) + 1;
             switch (funct3) {
                 case 0: cout << "\tLB\tx" << rd << ", -" << I_imm << "(" << rs1 << ")\n";    //ex: lb 0x3, 5(0x6)
                     //regs[rd] = M[rs1 + imm][0:7]
@@ -268,7 +269,7 @@ void instDecExec(unsigned int instWord)
            }
         }
         else{
-            S_imm = (S_imm & 0) + 1;
+            S_imm = (S_imm xor 0xFFFFFFFF) + 1;            
             switch (funct3) {
                 case 0: cout << "\tSB\tx" << rs2 << ", -" << S_imm << "(" << rs2 << ")" << "\n";
                     //M[rs1 + imm][0:7] = rs2[0:7];
@@ -288,6 +289,7 @@ void instDecExec(unsigned int instWord)
         }
     }
     else if (opcode == 0x63) {          // B-Instructions (1100011) 99
+        if(posNegBit_S == 0){
         switch (funct3) {
             case 0: cout << "\tBEQ\tx" << rs1 << ", " << rs2 << ", " << B_imm << "\n";
 						//(rs1 == rs2)? PC += imm;
@@ -315,7 +317,40 @@ void instDecExec(unsigned int instWord)
 
 
 				default: cout << "\tUnkown B Instruction \n"; 
+            }
         }
+        else{
+        B_imm = (B_imm xor 0xFFFFFFFF) + 1;            
+        switch (funct3) {
+            case 0: cout << "\tBEQ\tx" << rs1 << ", " << rs2 << ", -" << B_imm << "\n";
+						//(rs1 == rs2)? PC += imm;
+					break;
+
+				case 1: cout << "\tBNE\tx" << rs1 << ", " << rs2 << ", -" << B_imm << "\n";
+						//(rs1 != rs2)? PC += imm;
+					break;
+
+				case 4: cout << "\tBLT\tx" << rs1 << ", " << rs2 << ", -" << B_imm << "\n";
+						//(rs1 < rs2)? PC += imm;
+					break;
+
+				case 5: cout << "\tBGE\tx" << rs1 << ", " << rs2 << ", -" << B_imm << "\n";
+						//(rs1 > rs2)? PC += imm;
+					break;
+
+				case 6: cout << "\tBLTU\tx" << rs1 << ", " << rs2 << ", -" << B_imm << "\n";
+						//(rs1 < rs2)? PC += imm;
+					break;
+
+				case 7: cout << "\tBGEU\tx" << rs1 << ", " << rs2 << ", -" << B_imm << "\n";
+						//(rs1 >= rs2)? PC += imm;
+					break;
+
+
+				default: cout << "\tUnkown B Instruction \n"; 
+            }
+        }
+
     }
     
     else if (opcode == 0x6F) {          // J-Instructions (1101111) 111
@@ -359,8 +394,7 @@ int main(int argc, char *argv[]){
             (((unsigned char)buffer[pc + 2]) << 16) |
             (((unsigned char)buffer[pc + 3]) << 24);
             pc += 4;
-            // remove the following line once you have a complete disassembler
-            if (pc == 32) break;            // stop when PC reached address 32
+            if (pc == fsize) break;
             instDecExec(instWord);
         }
         
