@@ -59,7 +59,7 @@ void instDecExec(unsigned int instWord)
                 //regs[rd] = regs[rs1] + regs[rs2];
             }
                 break;
-            case 1: cout << "\tSLL\tx" << rd << ", x" << rs1 << ", x" << rs2 << "\n";        //SHOULD CASES BE IN HEXA????!!!!!!!!!!!
+            case 1: cout << "\tSLL\tx" << rd << ", x" << rs1 << ", x" << rs2 << "\n";      
                 //regs[rd] = regs[rs1] << regs[rs2];
                 break;
             case 2: cout << "\tSLT\tx" << rd << ", x" << rs1 << ", x" << rs2 << "\n";
