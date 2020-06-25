@@ -167,7 +167,7 @@ void instDecExec(unsigned int instWord)
 			case 1: cout << "\tEBREAK\t" << "\n";
 				break;
 
-			default: cout << "\tUnkown R Instruction \n";
+			default: cout << "\tUnkown I Instruction \n";
 			}
 		}
 		else if (opcode == 0x67)         // Jalr (1100111) 103
@@ -187,10 +187,39 @@ void instDecExec(unsigned int instWord)
 				case 2: cout << "\tSW\tx" << rs2 << ", " << S_imm << "(" << rs2 << ")" << "\n";
 						//M[rs1 + imm][0:31] = rs2[0:31];
 					break;
+
+				default: cout << "\tUnkown S Instruction \n";
 				}
 			}
 		else if (opcode == 0x63) {          // B-Instructions (1100011) 99
-			switch (funct3) {}
+			switch (funct3) {
+				case 0: cout << "\tBEQ\tx" << rs1 << ", " << rs2 << ", " << B_imm << "\n";
+						//(rs1 == rs2)? PC += imm;
+					break;
+
+				case 1: cout << "\tBNE\tx" << rs1 << ", " << rs2 << ", " << B_imm << "\n";
+						//(rs1 != rs2)? PC += imm;
+					break;
+
+				case 4: cout << "\tBLT\tx" << rs1 << ", " << rs2 << ", " << B_imm << "\n";
+						//(rs1 < rs2)? PC += imm;
+					break;
+
+				case 5: cout << "\tBGE\tx" << rs1 << ", " << rs2 << ", " << B_imm << "\n";
+						//(rs1 > rs2)? PC += imm;
+					break;
+
+				case 6: cout << "\tBLTU\tx" << rs1 << ", " << rs2 << ", " << B_imm << "\n";
+						//(rs1 < rs2)? PC += imm;
+					break;
+
+				case 7: cout << "\tBGEU\tx" << rs1 << ", " << rs2 << ", " << B_imm << "\n";
+						//(rs1 >= rs2)? PC += imm;
+					break;
+
+
+				default: cout << "\tUnkown S Instruction \n";
+			}
 		}
 
 		else if (opcode == 0x6F) {          // J-Instructions (1101111) 111
