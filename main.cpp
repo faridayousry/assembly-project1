@@ -274,15 +274,15 @@ csrrci t0 fcsr, 10 */
     else if (opcode == 0x23) {          // S-Instructions (0100011) 35
         if(posNegBit_S == 0){
            switch (funct3) {
-               case 0: cout << "\tSB\tx" << rs2 << ", " << S_imm << "(" << rs2 << ")" << "\n";
+               case 0: cout << "\tSB\tx" << rs2 << ", " << S_imm << "(x" << rs2 << ")" << "\n";
                    //M[rs1 + imm][0:7] = rs2[0:7];
                    break;
                 
-               case 1: cout << "\tSH\tx" << rs2 << ", " << S_imm << "(" << rs2 << ")" << "\n";
+               case 1: cout << "\tSH\tx" << rs2 << ", " << S_imm << "(x" << rs2 << ")" << "\n";
                    //M[rs1 + imm][0:15] = rs2[0:15];
                    break;
                 
-               case 2: cout << "\tSW\tx" << rs2 << ", " << S_imm << "(" << rs2 << ")" << "\n";
+               case 2: cout << "\tSW\tx" << rs2 << ", " << S_imm << "(x" << rs2 << ")" << "\n";
                    //M[rs1 + imm][0:31] = rs2[0:31];
                    break;
 
@@ -293,15 +293,15 @@ csrrci t0 fcsr, 10 */
         else{
             S_imm = (S_imm xor 0xFFF) + 1;            
             switch (funct3) {
-                case 0: cout << "\tSB\tx" << rs2 << ", -" << S_imm << "(" << rs2 << ")" << "\n";
+                case 0: cout << "\tSB\tx" << rs2 << ", -" << S_imm << "(x" << rs2 << ")" << "\n";
                     //M[rs1 + imm][0:7] = rs2[0:7];
                     break;
                     
-                case 1: cout << "\tSH\tx" << rs2 << ", -" << S_imm << "(" << rs2 << ")" << "\n";
+                case 1: cout << "\tSH\tx" << rs2 << ", -" << S_imm << "(x" << rs2 << ")" << "\n";
                     //M[rs1 + imm][0:15] = rs2[0:15];
                     break;
                     
-                case 2: cout << "\tSW\tx" << rs2 << ", -" << S_imm << "(" << rs2 << ")" << "\n";
+                case 2: cout << "\tSW\tx" << rs2 << ", -" << S_imm << "(x" << rs2 << ")" << "\n";
                     //M[rs1 + imm][0:31] = rs2[0:31];
                     break;
 
