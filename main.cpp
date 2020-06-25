@@ -385,10 +385,7 @@ csrrci t0 fcsr, 10 */
         cout << "\tAUPIC\tx" << rd << ", " << U_imm << "\n";
         //regs[rd] = PC + (imm << 12);
         
-    }else
-        cout << "\tUnkown Instruction \n";
-
-    else if (opcode == 0x0F) {          // I-Instructions (00001111) 15
+    }else if (opcode == 0x0F) {          // I-Instructions (00001111) 15
         switch (funct3) {
             case 0: cout << "\tFENCE\tx" << "\n";
 						//fence succ,pred
@@ -401,6 +398,9 @@ csrrci t0 fcsr, 10 */
         	default: cout << "\tUnkown I Instruction \n"; 
 
             }
+
+    }else
+        cout << "\tUnkown Instruction \n";
 
   
     
