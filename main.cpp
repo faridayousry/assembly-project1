@@ -138,7 +138,7 @@ void instDecExec(unsigned int instWord)
                 }
             }
         else{
-            I_imm = (I_imm xor 0xFFFFFFFF) + 1;
+            I_imm = (I_imm xor 0xFFF) + 1;
             switch (funct3) {
                 case 0: cout << "\tANDI\tx" << rd << ", x" << rs1 << ", -" << I_imm << "\n";
                     //regs[rd] = regs[rs1] - imm;
@@ -211,7 +211,7 @@ void instDecExec(unsigned int instWord)
             }
         }
          else {
-            I_imm = (I_imm xor 0xFFFFFFFF) + 1;
+            I_imm = (I_imm xor 0xFFF) + 1;
             switch (funct3) {
                 case 0: cout << "\tLB\tx" << rd << ", -" << I_imm << "(x" << rs1 << ")\n";    //ex: lb 0x3, 5(0x6)
                     //regs[rd] = M[rs1 + imm][0:7]
@@ -291,7 +291,7 @@ csrrci t0 fcsr, 10 */
            }
         }
         else{
-            S_imm = (S_imm xor 0xFFFFFFFF) + 1;            
+            S_imm = (S_imm xor 0xFFF) + 1;            
             switch (funct3) {
                 case 0: cout << "\tSB\tx" << rs2 << ", -" << S_imm << "(" << rs2 << ")" << "\n";
                     //M[rs1 + imm][0:7] = rs2[0:7];
@@ -342,7 +342,7 @@ csrrci t0 fcsr, 10 */
             }
         }
         else{
-        B_imm = (B_imm xor 0xFFFFFFFF) + 1;            
+        B_imm = (B_imm xor 0xFFF) + 1;            
         switch (funct3) {
             case 0: cout << "\tBEQ\tx" << rs1 << ", " << rs2 << ", -" << B_imm << "\n";
 						//(rs1 == rs2)? PC += imm;
