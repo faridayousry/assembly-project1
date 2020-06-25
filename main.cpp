@@ -23,6 +23,8 @@ void emitError(char *s)
 }
 
 
+
+
 void instDecExec(unsigned int instWord)
 {
     unsigned int rd, rs1, rs2, funct3, funct7, opcode, csr;
@@ -185,23 +187,23 @@ void instDecExec(unsigned int instWord)
     else if (opcode == 0x03) {        // I-Instructions (0000011) 3  (lb, lh, lw...)
         if(posNegBit_I == 0){
         switch (funct3) {
-                case 0: cout << "\tLB\tx" << rd << ", " << I_imm << "(" << rs1 << ")\n";    //ex: lb 0x3, 5(0x6)
+                case 0: cout << "\tLB\tx" << rd << ", " << I_imm << "(x" << rs1 << ")\n";    //ex: lb 0x3, 5(0x6)
                     //regs[rd] = M[rs1 + imm][0:7]
                     break;
                 
-                case 1: cout << "\tLH\tx" << rd << ", " << I_imm << "(" << rs1 << ")\n";
+                case 1: cout << "\tLH\tx" << rd << ", " << I_imm << "(x" << rs1 << ")\n";
                     //regs[rd] = M[rs1 + imm][0:15]
                     break;
                 
-                case 2: cout << "\tLW\tx" << rd << ", " << I_imm << "(" << rs1 << ")\n";
+                case 2: cout << "\tLW\tx" << rd << ", " << I_imm << "(x" << rs1 << ")\n";
                     //regs[rd] = M[rs1 + imm][0:31]
                     break;
                 
-                case 4:  cout << "\tLBU\tx" << rd << ", " << I_imm << "(" << rs1 << ")\n";
+                case 4:  cout << "\tLBU\tx" << rd << ", " << I_imm << "(x" << rs1 << ")\n";
                     //regs[rd] = M[rs1 + imm][0:7]
                     break;
                 
-                case 5: cout << "\tLHU\tx" << rd << ", " << I_imm << "(" << rs1 << ")\n";
+                case 5: cout << "\tLHU\tx" << rd << ", " << I_imm << "(x" << rs1 << ")\n";
                     //regs[rd] = M[rs1 + imm][0:15]
                     break;
                 
@@ -211,23 +213,23 @@ void instDecExec(unsigned int instWord)
          else {
             I_imm = (I_imm xor 0xFFFFFFFF) + 1;
             switch (funct3) {
-                case 0: cout << "\tLB\tx" << rd << ", -" << I_imm << "(" << rs1 << ")\n";    //ex: lb 0x3, 5(0x6)
+                case 0: cout << "\tLB\tx" << rd << ", -" << I_imm << "(x" << rs1 << ")\n";    //ex: lb 0x3, 5(0x6)
                     //regs[rd] = M[rs1 + imm][0:7]
                     break;
                     
-                case 1: cout << "\tLH\tx" << rd << ", -" << I_imm << "(" << rs1 << ")\n";
+                case 1: cout << "\tLH\tx" << rd << ", -" << I_imm << "(x" << rs1 << ")\n";
                     //regs[rd] = M[rs1 + imm][0:15]
                     break;
                     
-                case 2: cout << "\tLW\tx" << rd << ", -" << I_imm << "(" << rs1 << ")\n";
+                case 2: cout << "\tLW\tx" << rd << ", -" << I_imm << "(x" << rs1 << ")\n";
                     //regs[rd] = M[rs1 + imm][0:31]
                     break;
                     
-                case 4:  cout << "\tLBU\tx" << rd << ", -" << I_imm << "(" << rs1 << ")\n";
+                case 4:  cout << "\tLBU\tx" << rd << ", -" << I_imm << "(x" << rs1 << ")\n";
                     //regs[rd] = M[rs1 + imm][0:7]
                     break;
                     
-                case 5: cout << "\tLHU\tx" << rd << ", -" << I_imm << "(" << rs1 << ")\n";
+                case 5: cout << "\tLHU\tx" << rd << ", -" << I_imm << "(x" << rs1 << ")\n";
                     //regs[rd] = M[rs1 + imm][0:15]
                     break;
                     
